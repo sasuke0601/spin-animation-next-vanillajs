@@ -1,0 +1,44 @@
+/* global.css */
+@font-face {
+    font-family: "Super Center";
+    src: url(../assets/fonts/Supply\ Center.otf);
+}
+
+:root {
+    --main-font: "Super Center";
+    /* Brand/Primary 1/Lighter 1 */
+    --brand-primary1-lighter-1: #463931;
+
+    /* Brand/Primary 1/Base */
+    --brand-primary1-base: #fff5d4;
+
+    /* Brand/Primary 1/Lighter 2 */
+    --brand-primary1-lighter-2: #786055;
+
+    /* Base/Light Shade/Base */
+    --base-lightshade-base: #786055;
+
+    /* Base/Dark Shade/Base */
+    --base-darkshade-base: #463931;
+
+    /* Side Panel */
+    --side-panel: #463931;
+
+    /* Color Body Text */
+    --color-body-text: #fff;
+
+    /* Accents/Shadows */
+    --accents-shadows: #463931;
+
+    /* Border Color */
+    --border-color: #dfbbaa;
+
+    /* Highlights */
+    --highlights: #f37a47;
+
+    /* Wheel Back Low (if needed) */
+    --wheel-back-low: #7c8bea;
+
+    /* Wheel Text Low (if needed) */
+    --wheel-text-low: #7c8bea;
+}
