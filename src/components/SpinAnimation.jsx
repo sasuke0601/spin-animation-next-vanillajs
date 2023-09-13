@@ -15,8 +15,6 @@ export default function SpinAnimation() {
   const [targetIndex, setTargetInex] = useState(5);
   const originCards = cards;
 
-  const [showCards, setShowCards] = useState([]);
-
   const [target, setTarget] = useState(0);
   const [winnerIndex, setWinnerIndex] = useState(-1);
   const [isSpinEnd, setIsSpinEnd] = useState(false);
@@ -29,6 +27,7 @@ export default function SpinAnimation() {
     return width / 2;
   }, [width]);
 
+  const [showCards, setShowCards] = useState([]);
 
   useEffect(() => {
     setShowCards(
@@ -38,7 +37,13 @@ export default function SpinAnimation() {
       )
     );
   }, [cards]);
-  
+
+  useEffect(() => {
+    if (audio) {
+      audio.muted = isMuted;
+    }
+  }, [isMuted]);
+
   useEffect(() => {
     if (audio == undefined || audio == null) setAudio(new Audio("./tick.mp3"));
   }, [audio]);
@@ -61,11 +66,6 @@ export default function SpinAnimation() {
     if (targetIndex > cards.length || targetIndex < 1) {
       alert("invaid target index");
       return;
-    }
-
-    // Play audio
-    if (audio && !isMuted) {
-      audio.play();
     }
 
     const delta = Math.floor(centerPoint / CARD_WIDTH);
@@ -93,7 +93,7 @@ export default function SpinAnimation() {
         setWinnerIndex(50 + delta);
         setIsSpinEnd(true);
         if (audio && !isMuted) {
-          audio.play();
+          playsound();
         }
       } else {
         const t = elapsedTime / duration;
@@ -104,13 +104,22 @@ export default function SpinAnimation() {
         if (
           prevCardIndex != Math.floor((newValue + centerPoint) / CARD_WIDTH)
         ) {
-          audio.play();
+          console.log(isMuted);
+          if (!isMuted) {
+            playsound(); // Play audio using cloneNode()
+          }
           prevCardIndex = Math.floor((newValue + centerPoint) / CARD_WIDTH);
         }
         setTimeout(updateTargetValue, 16); // Update every 16ms (~60fps)
       }
     };
     updateTargetValue();
+  };
+
+  // Function to play audio using cloneNode()
+  const playsound = () => {
+    const newAudio = audio.cloneNode();
+    newAudio.play();
   };
 
   const reset = () => {
@@ -121,9 +130,6 @@ export default function SpinAnimation() {
 
   const toggleMute = () => {
     setIsMuted(prevMute => !prevMute);
-    if (audio) {
-      audio.muted = !isMuted;
-    }
   };
 
   return (
@@ -169,7 +175,7 @@ export default function SpinAnimation() {
                     setAudio();
                   }}
                 >
-                  SPIN
+                  Spin
                 </button>
                 <button className={styles["spin-btn"]} onClick={reset}>
                   RESET
