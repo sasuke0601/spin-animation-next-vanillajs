@@ -91,12 +91,14 @@
     transition: all 0.5s;
     opacity: 0;
     filter: blur(10px);
+    pointer-events: none;
 }
 
 .loobox-open {
     opacity: 1;
     transform: translateX(-50%) scale(1);
     filter: blur(0px);
+    pointer-events: all;
 }
 
 .boxImage {
