@@ -1,3 +1,9 @@
+.main-box {
+    overflow-x: hidden;
+    min-height: 100vh;
+    background-color: var(--base-darkshade-base);
+}
+
 .spin-box {
     position: relative;
     margin-top: 32px;
@@ -11,7 +17,7 @@
     transform: translateX(-50%);
     width: 2px;
     z-index: 10;
-    background-color: var(--base-darkshade-base);
+    background-color: #000;
 }
 
 .winning {
@@ -26,16 +32,21 @@
 }
 
 .demo-control {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 280px;
     margin-top: 40px;
+    padding: 20px;
+    position: relative;
 }
 
 .demo-control input {
     padding: 10px 20px;
+}
 
+
+.panel {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .sound-control {
@@ -70,4 +81,72 @@
     left: 50%;
     transform: translateX(-50%);
     top: 400px;
+}
+
+.lootbox {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) scale(0.5);
+    top: 0;
+    transition: all 0.5s;
+    opacity: 0;
+    filter: blur(10px);
+}
+
+.loobox-open {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+    filter: blur(0px);
+}
+
+.boxImage {
+    position: relative;
+    z-index: 1;
+}
+
+.show-item {
+    width: 400px;
+    height: 200px;
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    z-index: 2;
+    text-align: center;
+}
+
+.show-values {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.5s;
+    bottom: -100px;
+    opacity: 0;
+}
+
+.isResValues {
+    opacity: 1;
+    bottom: 40px;
+}
+
+.show-values p {
+    font-size: 32px;
+    font-family: var(--main-font);
+    color: var(--highlights);
+    text-shadow: 0 4px 0px #000;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.btn-back {
+    font-size: 18px;
+    font-family: var(--main-font);
+    border-radius: 12px;
+    padding: 8px 12px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 30px;
+    z-index: 10;
 }

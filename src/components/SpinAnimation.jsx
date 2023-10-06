@@ -3,6 +3,7 @@ import { cards } from "./config";
 import styles from "./SpinAnimation.module.css";
 import PriceCard from "./PriceCard";
 import useWindowSize from "@/hooks/useWindowSize";
+import Image from "next/image";
 
 const CARD_WIDTH = 122;
 const CARD_GAP = 0;
@@ -15,12 +16,13 @@ export default function SpinAnimation() {
   const [targetIndex, setTargetInex] = useState(5);
   const originCards = cards;
 
-  const [target, setTarget] = useState(0);
-  const [winnerIndex, setWinnerIndex] = useState(-1);
-  const [isSpinEnd, setIsSpinEnd] = useState(false);
-  const [centerIndex, setCenterIndex] = useState(-1);
-  const [audio, setAudio] = useState(null);
-  const [isMuted, setIsMuted] = useState(false); // Track mute status
+  const [lootoxImage, setLootboxImage] = useState(
+    "/images/Brohalla_LootBOX_GIF.gif"
+  );
+
+  const [isResValues, setIsResValues] = useState(false);
+  const [rewardToken, setRewardToken] = useState("");
+  const [rewardValue, setRewardValue] = useState("");
 
   // get center position from cards and width
   const centerPoint = useMemo(() => {
@@ -37,6 +39,13 @@ export default function SpinAnimation() {
       )
     );
   }, [cards]);
+
+  const [target, setTarget] = useState(0);
+  const [winnerIndex, setWinnerIndex] = useState(-1);
+  const [isSpinEnd, setIsSpinEnd] = useState(false);
+  const [centerIndex, setCenterIndex] = useState(-1);
+  const [audio, setAudio] = useState(null);
+  const [isMuted, setIsMuted] = useState(false); // Track mute status
 
   useEffect(() => {
     if (audio) {
@@ -80,9 +89,9 @@ export default function SpinAnimation() {
         return c;
       }
     });
-    console.log(newCards);
 
     setShowCards(newCards);
+    console.log(newCards);
     let prevCardIndex = 0;
     const updateTargetValue = () => {
       const currentTime = performance.now();
@@ -92,6 +101,7 @@ export default function SpinAnimation() {
         setCenterIndex(Math.floor((endValue + centerPoint) / CARD_WIDTH));
         setWinnerIndex(50 + delta);
         setIsSpinEnd(true);
+        handleLoobox();
         if (audio && !isMuted) {
           playsound();
         }
@@ -104,7 +114,6 @@ export default function SpinAnimation() {
         if (
           prevCardIndex != Math.floor((newValue + centerPoint) / CARD_WIDTH)
         ) {
-          console.log(isMuted);
           if (!isMuted) {
             playsound(); // Play audio using cloneNode()
           }
@@ -117,23 +126,31 @@ export default function SpinAnimation() {
   };
 
   // Function to play audio using cloneNode()
-  const playsound = () => {
+  function playsound() {
     const newAudio = audio.cloneNode();
     newAudio.play();
-  };
+  }
 
   const reset = () => {
     setTarget(0);
     setWinnerIndex(-1);
     setIsSpinEnd(false);
+    setIsResValues(false);
   };
 
   const toggleMute = () => {
     setIsMuted(prevMute => !prevMute);
   };
 
+  const handleLoobox = () => {
+    setLootboxImage("/images/Brohalla_LootBOX_GIF.gif");
+    setTimeout(() => {
+      setIsResValues(true);
+    }, 1000);
+  };
+
   return (
-    <main style={{ overflow: "hidden" }}>
+    <main className={styles["main-box"]}>
       <div className={styles["spin-box"]}>
         {!isSpinEnd && <div className={styles["center-line"]} />}
         <div className="">
@@ -160,12 +177,53 @@ export default function SpinAnimation() {
             ))}
           </div>
           <div className={styles["demo-control"]}>
+            <div
+              className={
+                styles["lootbox"] + " " + styles[isSpinEnd ? "loobox-open" : ""]
+              }
+            >
+              <Image
+                src={lootoxImage}
+                width={400}
+                height={400}
+                className={styles["boxImage"]}
+                alt=""
+              />
+              <div className={styles["show-item"]}>
+                <div
+                  className={
+                    styles["show-values"] +
+                    " " +
+                    styles[isResValues ? "isResValues" : ""]
+                  }
+                >
+                  {winnerIndex !== -1 && (
+                    <>
+                      <p>{showCards[winnerIndex].title}</p>
+                      <div className="">
+                        <Image
+                          src={showCards[winnerIndex].image}
+                          width={80}
+                          height={80}
+                          alt=""
+                        />
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+              <button className={styles["btn-back"]} onClick={reset}>
+                Back
+              </button>
+            </div>
             {!isSpinEnd && (
-              <>
+              <div className={styles["panel"]}>
                 <input
                   value={targetIndex}
                   onChange={e => setTargetInex(e.target.value)}
                   placeholder="Input target card index"
+                  min={1}
+                  max={7}
                   type="number"
                 />
                 <button
@@ -180,7 +238,7 @@ export default function SpinAnimation() {
                 <button className={styles["spin-btn"]} onClick={reset}>
                   RESET
                 </button>
-              </>
+              </div>
             )}
           </div>
           <div className={styles["sound-control"]}>

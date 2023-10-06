@@ -18,11 +18,16 @@ const PriceCard = ({
   return (
     <div
       className={styles.card}
+      // style={{
+      //   transition: "transform 2.5s",
+      //   transform: `scale(${isWinner ? 1.5 : 1})`,
+      //   zIndex: isWinner ? 10 : 1,
+      //   filter: `blur(${isEnd ? (isWinner ? 0 : 6) : 0}px)`,
+      // }}
       style={{
         transition: "transform 2.5s",
-        transform: `scale(${isWinner ? 1.5 : 1})`,
+        opacity: isEnd ? 0 : 1,
         zIndex: isWinner ? 10 : 1,
-        filter: `blur(${isEnd ? (isWinner ? 0 : 6) : 0}px)`,
       }}
     >
       <p style={{ color: isCenter ? "red" : "black" }}>id:{id}</p>
